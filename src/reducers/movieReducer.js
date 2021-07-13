@@ -12,6 +12,13 @@ const reducer = (state = initialState, action) => { //**In movieReducer.js, make
             return {
                 movies: state.movies.filter(item=>(action.payload !== item.id))
             }
+        // Add in an ADD_MOVIE case to movieReducer.js.    
+        case ADD_MOVIE:
+            // Make this new case return a version of state with new movie values passed in through the payload.
+            return {
+                ...state,
+                movies: [ ...state.movies, action.payload]
+            }    
         default:
             return state;
     }

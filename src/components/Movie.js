@@ -1,14 +1,22 @@
 import React from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux'; //Import connect for use.
+import { deleteMovie } from '../actions/movieActions'; //Import deleteMovie for use.
+
 const Movie = (props) => {
     console.log('Movie props: ', props) //See what props are being received
     const { id } = useParams();
     const { push } = useHistory();
 
-    const movies = [];
     const movie = props.movies.find(movie=>movie.id===Number(id)); //added props here to make sure the data is being received
     
+    //Create the necessary event handlers to call deleteMovie on the current movie's id. 
+
+    const useDeleteMovie = () => {
+        props.deleteMovie(movie.id)
+        push('/movies') //After setting the state, redirect the user using the push('/movies') command.
+    }
+
     return(<div className="modal-page col">
         <div className="modal-dialog">
             <div className="modal-content">
@@ -39,7 +47,9 @@ const Movie = (props) => {
                         
                         <section>
                             <span className="m-2 btn btn-dark">Favorite</span>
-                            <span className="delete"><input type="button" className="m-2 btn btn-danger" value="Delete"/></span>
+                            <span className="delete">
+                                {/* **Find the HTML element that should trigger a deletion in the movie component.** Connect the necessary event handlers  */}
+                                <input onClick={useDeleteMovie} type="button" className="m-2 btn btn-danger" value="Delete"/></span>
                         </section>
                     </div>
                 </div>
@@ -54,4 +64,5 @@ const mapStateToProps = (state) => {
         movies: state.movies
     }
 }
-export default connect(mapStateToProps)(Movie);
+//**We can delete movies within the Movie Component.** Connect the deleteMovie action through the connect method.
+export default connect(mapStateToProps, {deleteMovie})(Movie);

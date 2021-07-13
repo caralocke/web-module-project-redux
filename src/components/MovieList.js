@@ -30,7 +30,7 @@ const MovieList = (props)=> {
                 </tbody>
             </table>
             
-            <MovieFooter totalMovies={movies.length}/>
+            <MovieFooter totalMovies={props.movies.length}/> {/*Added props here */}
         </div>
     );
 }
