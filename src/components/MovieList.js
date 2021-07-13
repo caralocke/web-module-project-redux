@@ -7,8 +7,7 @@ import { connect } from 'react-redux'; //Import connect for use
 
 const MovieList = (props)=> {
     console.log('MovieList props: ', props) //see what props are being received
-    const movies = [];
-
+    const movies = props.movies; //made sure movies was referencing the correct data.
     return (
         <div className="col">
             <table className="table table-striped table-hover">
@@ -23,14 +22,13 @@ const MovieList = (props)=> {
                 </thead>
 
                 <tbody>
-                    {/* added 'props' before movies on line 28 to make sure it was finding the data */}
                     {
-                        props.movies.map(movie=><MovieListItem key={movie.id} movie={movie}/>)
+                        movies.map(movie=><MovieListItem key={movie.id} movie={movie}/>)
                     }
                 </tbody>
             </table>
             
-            <MovieFooter totalMovies={props.movies.length}/> {/*Added props here */}
+            <MovieFooter totalMovies={movies.length}/>
         </div>
     );
 }
@@ -38,7 +36,7 @@ const MovieList = (props)=> {
 const mapStateToProps = (state) => {
     console.log('MovieList.js state: ', state)
     return {
-        movies: state.movies
+        movies: state.movieReducer.movies //Make changes necessary to get the component connected to the movie reducer working again.
     }
 }
 export default connect(mapStateToProps)(MovieList);

@@ -8,7 +8,8 @@ const Movie = (props) => {
     const { id } = useParams();
     const { push } = useHistory();
 
-    const movie = props.movies.find(movie=>movie.id===Number(id)); //added props here to make sure the data is being received
+    const movies= props.movies  //added props here to make sure the correct data is being received
+    const movie = movies.find(movie=>movie.id===Number(id));
     
     //Create the necessary event handlers to call deleteMovie on the current movie's id. 
 
@@ -61,7 +62,8 @@ const Movie = (props) => {
 const mapStateToProps = (state) => {
     console.log('Movie.js state: ', state)
     return {
-        movies: state.movies
+        movies: state.movieReducer.movies, //Make changes necessary to get the component connected to the movie reducer working again.
+        displayFavorites: state.favoritesReducer.displayFavorites //Connect the displayFavorites state to the Movie and MovieHeader component.
     }
 }
 //**We can delete movies within the Movie Component.** Connect the deleteMovie action through the connect method.

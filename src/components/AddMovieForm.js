@@ -24,6 +24,7 @@ const AddMovieForm = (props) => {
     }
     //Create the necessary event handlers to call addMovie.
     const handleSubmit = (e) => {
+        e.preventDefault() //Added preventDefault() to prevent the refreshing of the page.
         props.addMovie({
             ...movie,
             id: Date.now()

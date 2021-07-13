@@ -4,13 +4,13 @@ import { connect } from 'react-redux'; //Import connect for use.
 
 const MovieHeader = (props) => {
     console.log('MovieHeader props: ', props) //See what props are being received.
-    const appTitle = "";
-    const displayFavorites = true;
+    const appTitle = props.appTitle; //Added props here to make sure it was receiving the correct data.
+    const displayFavorites = props.displayFavorites; //Replaced 'true' with the value of props.displayFavorites
     
     return(<div className="table-title">
         <div className="row">
         <div className="col-sm-6">
-            <h2>{props.appTitle}</h2> {/*Added props here to make sure it was receiving the correct data. */}
+            <h2>{appTitle}</h2>
         </div>
         <div className="col-sm-6 headerBar">
             <div className="btn btn-sm btn-primary"><span>{ displayFavorites ? "Hide" : "Show"} Favorites</span></div>
@@ -24,7 +24,8 @@ const MovieHeader = (props) => {
 const mapStateToProps = (state) => {
     console.log('MovieHeader state: ', state)
     return {
-        appTitle: state.appTitle
+        appTitle: state.movieReducer.appTitle, //Make changes necessary to get the component connected to the movie reducer working again.
+        displayFavorites: state.favoritesReducer.displayFavorites //Connect the displayFavorites state to the Movie and MovieHeader component.
     }
 }
 export default connect(mapStateToProps)(MovieHeader);
