@@ -3,7 +3,10 @@ import React from 'react';
 import MovieListItem from './MovieListItem';
 import MovieFooter from './MovieFooter';
 
+import { connect } from 'react-redux'; //Import connect for use
+
 const MovieList = (props)=> {
+    console.log('MovieList props: ', props) //see what props are being received
     const movies = [];
 
     return (
@@ -20,8 +23,9 @@ const MovieList = (props)=> {
                 </thead>
 
                 <tbody>
+                    {/* added 'props' before movies on line 28 to make sure it was finding the data */}
                     {
-                        movies.map(movie=><MovieListItem key={movie.id} movie={movie}/>)
+                        props.movies.map(movie=><MovieListItem key={movie.id} movie={movie}/>)
                     }
                 </tbody>
             </table>
@@ -30,5 +34,11 @@ const MovieList = (props)=> {
         </div>
     );
 }
-
-export default MovieList;
+// **The MovieList component prints all of our movies to the screen.** Use the connect method here to map the movies state value into props. Replace our static movie variable with that prop.
+const mapStateToProps = (state) => {
+    console.log('MovieList.js state: ', state)
+    return {
+        movies: state.movies
+    }
+}
+export default connect(mapStateToProps)(MovieList);
