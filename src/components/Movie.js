@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux'; //Import connect for use.
 import { deleteMovie } from '../actions/movieActions'; //Import deleteMovie for use.
+import { addFavorite } from '../actions/favoritesAction'; //Import addFavorite for use.
 
 const Movie = (props) => {
     console.log('Movie props: ', props) //See what props are being received
@@ -10,12 +11,21 @@ const Movie = (props) => {
 
     const movies= props.movies  //added props here to make sure the correct data is being received
     const movie = movies.find(movie=>movie.id===Number(id));
+    const displayFavorites = props.displayFavorites //define display favorites
     
     //Create the necessary event handlers to call deleteMovie on the current movie's id. 
 
     const useDeleteMovie = () => {
         props.deleteMovie(movie.id)
         push('/movies') //After setting the state, redirect the user using the push('/movies') command.
+    }
+
+    //Create an event handler to use addFavorite
+    const useAddFavorite = () => {
+        props.addFavorite({
+            title: movie.title,
+            id: movie.id
+        })
     }
 
     return(<div className="modal-page col">
@@ -47,10 +57,11 @@ const Movie = (props) => {
                         </section>
                         
                         <section>
-                            <span className="m-2 btn btn-dark">Favorite</span>
+                            {/* It makes sense to not allow the user to favorite an item if favorites is not displayed. Add in means for the favorite button to ONLY display if displayFavorite is true. Also add the onClick to add the movie to favorites. */}
+                            {displayFavorites && <span onClick={useAddFavorite} key={movie.id} className="m-2 btn btn-dark">Favorite</span>}
                             <span className="delete">
                                 {/* **Find the HTML element that should trigger a deletion in the movie component.** Connect the necessary event handlers  */}
-                                <input onClick={useDeleteMovie} type="button" className="m-2 btn btn-danger" value="Delete"/></span>
+                                <input onClick={useDeleteMovie} key={movie} type="button" className="m-2 btn btn-danger" value="Delete"/></span>
                         </section>
                     </div>
                 </div>
@@ -66,5 +77,5 @@ const mapStateToProps = (state) => {
         displayFavorites: state.favoritesReducer.displayFavorites //Connect the displayFavorites state to the Movie and MovieHeader component.
     }
 }
-//**We can delete movies within the Movie Component.** Connect the deleteMovie action through the connect method.
-export default connect(mapStateToProps, {deleteMovie})(Movie);
+//**We can delete movies within the Movie Component.** Connect the deleteMovie action through the connect method. Also connected addFavorite
+export default connect(mapStateToProps, {deleteMovie, addFavorite})(Movie);
