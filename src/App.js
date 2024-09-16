@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Route, Switch, Redirect } from "react-router-dom";
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'; //Connect was already imported 
 
 import MovieList from './components/MovieList';
 import Movie from './components/Movie';
@@ -12,7 +12,8 @@ import AddMovieForm from './components/AddMovieForm';
 import FavoriteMovieList from './components/FavoriteMovieList';
 
 const App = props => {
-  const displayFavorites = true;
+  console.log('App.js props: ', props)
+  const displayFavorites = props.displayFavorites; //Changed this from the hard coded 'true' to be the value of whatever props.displayFavorites is.
 
   return (
     <div>
@@ -47,5 +48,11 @@ const App = props => {
     </div>
   );
 };
-
-export default App;
+//Connect displayFavorites so we can hide the FavoriteMovieList component if displayFavorites is false
+const mapStateToProps = (state) => {
+  console.log('App.js state: ', state)
+  return {
+    displayFavorites: state.favoritesReducer.displayFavorites
+  }
+}
+export default connect(mapStateToProps)(App);

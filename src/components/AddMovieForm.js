@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { addMovie } from './../actions/movieActions';
-import { connect } from 'react-redux';
+import { addMovie } from './../actions/movieActions'; //addMovie was already imported
+import { connect } from 'react-redux'; //Connect was already imported
 
 import { Link, useHistory } from 'react-router-dom';
 
 const AddMovieForm = (props) => {
+    console.log('AddMovieFormProps: ', props) //See what props are being received
     const { push } = useHistory();
 
     const [movie, setMovie] = useState({
@@ -21,14 +22,22 @@ const AddMovieForm = (props) => {
             [e.target.name]: e.target.value
         });
     }
-
+    //Create the necessary event handlers to call addMovie.
     const handleSubmit = (e) => {
+        e.preventDefault() //Added preventDefault() to prevent the refreshing of the page.
+        props.addMovie({
+            ...movie,
+            id: Date.now()
+        })
+        //Add in push('/movies/) after calling your action to trigger a redirect.
+        push('/movies')
     }
 
     const { title, director, genre, metascore, description } = movie;
     return(<div className="col">
         <div className="modal-dialog">
             <div className="modal-content">
+                {/* handleSubmit was already connected */}
                 <form onSubmit={handleSubmit}>
                     <div className="modal-header">						
                         <h4 className="modal-title">Add Movie</h4>
@@ -66,5 +75,6 @@ const AddMovieForm = (props) => {
         </div>
     </div>);
 }
+// Find the component that triggers the adding of a movie and connect the addMovie action.
 
-export default AddMovieForm;
+export default connect(null, {addMovie})(AddMovieForm);

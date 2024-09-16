@@ -3,9 +3,11 @@ import React from 'react';
 import MovieListItem from './MovieListItem';
 import MovieFooter from './MovieFooter';
 
-const MovieList = (props)=> {
-    const movies = [];
+import { connect } from 'react-redux'; //Import connect for use
 
+const MovieList = (props)=> {
+    console.log('MovieList props: ', props) //see what props are being received
+    const movies = props.movies; //made sure movies was referencing the correct data.
     return (
         <div className="col">
             <table className="table table-striped table-hover">
@@ -30,5 +32,11 @@ const MovieList = (props)=> {
         </div>
     );
 }
-
-export default MovieList;
+// **The MovieList component prints all of our movies to the screen.** Use the connect method here to map the movies state value into props. Replace our static movie variable with that prop.
+const mapStateToProps = (state) => {
+    console.log('MovieList.js state: ', state)
+    return {
+        movies: state.movieReducer.movies //Make changes necessary to get the component connected to the movie reducer working again.
+    }
+}
+export default connect(mapStateToProps)(MovieList);
